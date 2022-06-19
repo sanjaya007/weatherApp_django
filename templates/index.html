@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/sanjaya007/flex-library@master/dist/css/sanjaya.min.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <div class="container-fluid navbar-box flex-css-row-sb px-4 py-5">
+      <div class="logo">
+        <h1>the-weather</h1>
+      </div>
+      <div class="date">
+        <p>{{date}}</p>
+      </div>
+    </div>
+
+    <div class="container-fluid lets-see flex-css">
+      <div class="see-text px-4 py-2" id="letSee">
+        <p>Lets see !</p>
+      </div>
+    </div>
+
+    <div class="container-fluid py-5 px-4">
+      <form action="" method="POST" class="flex-css-column py-5">
+        {% csrf_token %}
+        <div class="input-container">
+          <input
+            type="text"
+            placeholder="Any place name . . . ."
+            id="searchInput"
+            name="search"
+          />
+          <button type="submit">Search</button>
+        </div>
+        {% if errorMsg %}
+        <div class="error-message pt-2">
+          <p class="text-danger">No place found !!</p>
+        </div>
+        {% else %} {% endif %}
+      </form>
+    </div>
+
+    <div class="container-fluid info-container flex-css-row-wrap">
+      {% if noData %}
+      <div class="no-data-box flex-css py-5 px-3">
+        <h1>No data found !!</h1>
+      </div>
+      {% else %} {% for value in weatherArr %}
+      <div class="box p-3 m-4">
+        <div class="place-details flex-css-row-sb">
+          <p title="Country Code: {{value.country}}">{{value.place}}</p>
+          <span title="{{value.date}}">{{value.time}}</span>
+        </div>
+        <div class="icon-container flex-css-column py-3">
+          <img
+            src="https://openweathermap.org/img/w/{{value.icon}}.png"
+            alt="icon"
+          />
+          <p class="pt-1">{{value.status}}</p>
+        </div>
+        <div class="temp-details flex-bottom-row-sb">
+          <div class="other-details">
+            <div class="data-row flex-css-row-start">
+              <i class="fas fa-info-circle"></i
+              ><span> {{value.description}} </span>
+            </div>
+            <div class="data-row flex-css-row-start my-2">
+              <i class="fas fa-wind icon-img"></i>
+              <span> {{value.wind_speed}}{{" "}}km/h </span>
+            </div>
+            <div class="data-row flex-css-row-start">
+              <i class="fas fa-tint"></i> <span>{{value.humidity}}%</span>
+            </div>
+          </div>
+          <div class="temp-value">
+            <h1>{{value.temperature}}<sup>o</sup></h1>
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/static/js/script.js"></script>
+  </body>
+</html>
